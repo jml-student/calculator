@@ -89,9 +89,26 @@ erase.addEventListener("click", () => {
 
 const equal = document.querySelector(".equal");
 equal.addEventListener("click", () => {
-    if (findOperator(screenArray)) {
-        operate(screenArray[0], screenArray[1], screenArray[2]);      
+    if (findOperators(screenArray)) {
+        let firstValue = "";
+        let secondValue = "";
+        let searchFirstValue = true;
+        let operator = "";
 
+        for (let i=0; i < screenArray.length; i++) {
+            let element = screenArray[i];
+            if (typeof element === "number") {
+                if (searchFirstValue) {
+                    firstValue += element;
+                } else {
+                    secondValue += element;
+                }
+            } else {
+                searchFirstValue = false;
+                operator = element;
+            }
+        }
+        operate(parseInt(firstValue), operator,parseInt(secondValue));      
     }
 })
 
@@ -113,7 +130,7 @@ function eraseChar() {
     screen.textContent = screenArray.join(" ");
 }
 
-function findOperator(array) {
+function findOperators(array) {
     const operators = [" + ", " - ", " x ", " / ", " % "];
     return operators.some(operator => array.includes(operator));
 }
