@@ -50,31 +50,73 @@ nine.addEventListener("click", () => {
     displayToScreen(9);
 })
 
+const dot = document.querySelector(".dot");
+dot.addEventListener("click", () => {
+    displayToScreen(".");
+})
+
 const plus = document.querySelector(".plus");
 plus.addEventListener("click", () => {
-    displayToScreen(" + ");
+    if (findOperators(screenArray)) {
+        let values = getValues(screenArray);
+        let firstValue = values[0];
+        let operator = values[1];
+        let secondValue = values[2];
+        operate(firstValue, operator, secondValue); 
+        displayToScreen(" + ");
+    } else {
+        displayToScreen(" + ");
+    }
 })
 
 const minus = document.querySelector(".minus");
 minus.addEventListener("click", () => {
-    displayToScreen(" - ");
+    if (findOperators(screenArray)) {
+        let values = getValues(screenArray);
+        let firstValue = values[0];
+        let operator = values[1];
+        let secondValue = values[2];
+        operate(firstValue, operator, secondValue);
+        displayToScreen(" - ");
+    } else {
+        displayToScreen(" - ");
+    }
 })
 
 const x = document.querySelector(".multiply");
 x.addEventListener("click", () => {
-    displayToScreen(" x ");
+    if (findOperators(screenArray)) {
+        let values = getValues(screenArray);
+        let firstValue = values[0];
+        let operator = values[1];
+        let secondValue = values[2];
+        operate(firstValue, operator, secondValue);
+        displayToScreen(" x ");
+    } else {
+        displayToScreen(" x ");
+    }
 })
 
 const slash = document.querySelector(".divide");
 slash.addEventListener("click", () => {
-    displayToScreen(" / ");
+    if (findOperators(screenArray)) {
+        let values = getValues(screenArray);
+        let firstValue = values[0];
+        let operator = values[1];
+        let secondValue = values[2];
+        operate(firstValue, operator, secondValue);
+        displayToScreen(" / ");
+    } else {
+        displayToScreen(" / ");
+    }
 })
 
 const percent = document.querySelector(".percent");
 percent.addEventListener("click", () => {
-    let number = screenArray[0];
+    let values = getValues(screenArray);
+    let firstValue = values[0];
     clearScreen();
-    displayToScreen(divideOneHundred(number));
+    displayToScreen(divideOneHundred(firstValue));
 })
 
 const clear = document.querySelector(".clear");
@@ -90,25 +132,11 @@ erase.addEventListener("click", () => {
 const equal = document.querySelector(".equal");
 equal.addEventListener("click", () => {
     if (findOperators(screenArray)) {
-        let firstValue = "";
-        let secondValue = "";
-        let searchFirstValue = true;
-        let operator = "";
-
-        for (let i=0; i < screenArray.length; i++) {
-            let element = screenArray[i];
-            if (typeof element === "number") {
-                if (searchFirstValue) {
-                    firstValue += element;
-                } else {
-                    secondValue += element;
-                }
-            } else {
-                searchFirstValue = false;
-                operator = element;
-            }
-        }
-        operate(parseInt(firstValue), operator,parseInt(secondValue));      
+        let values = getValues(screenArray);
+        let firstValue = values[0];
+        let operator = values[1];
+        let secondValue = values[2];
+        operate(firstValue, operator, secondValue);      
     }
 })
 
@@ -153,6 +181,40 @@ function divide(x, y) {
 
 function divideOneHundred(x) {
     return x / 100;
+}
+
+function getValues(array) {
+    let firstValue = "";
+    let secondValue = "";
+    let searchFirstValue = true;
+    let operator = "";
+
+    for (let i=0; i < array.length; i++) {
+        let element = array[i];
+        if (typeof element === "number" || element === ".") {
+            if (searchFirstValue) {
+                firstValue += element;
+            } else {
+                secondValue += element;
+            }
+        } else {
+            searchFirstValue = false;
+            operator = element;
+        }
+    }
+
+    if (firstValue.includes(".")) {
+        firstValue = parseFloat(firstValue);
+    } else {
+        firstValue = parseInt(firstValue);
+    }
+    if (secondValue.includes(".")) {
+        secondValue = parseFloat(secondValue);
+    } else {
+        secondValue = parseInt(secondValue);
+    }
+
+    return [firstValue, operator, secondValue];
 }
 
 function operate(firstValue, operator, secondValue) {
