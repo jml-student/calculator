@@ -119,6 +119,13 @@ percent.addEventListener("click", () => {
     displayToScreen(divideOneHundred(firstValue));
 })
 
+const plusminus = document.querySelector(".plus-minus");
+plusminus.addEventListener("click", () => {
+    if (screenArray.length == 0 || findOperators(screenArray)) {
+        displayToScreen("-");
+    }
+})
+
 const clear = document.querySelector(".clear");
 clear.addEventListener("click", () => {
     clearScreen();
@@ -126,7 +133,9 @@ clear.addEventListener("click", () => {
 
 const erase = document.querySelector(".erase");
 erase.addEventListener("click", () => {
-    eraseChar();
+    const screen = document.querySelector(".screen");
+    screenArray.pop();
+    screen.textContent = screenArray.join(" ");
 })
 
 const equal = document.querySelector(".equal");
@@ -150,12 +159,6 @@ function clearScreen() {
     const screen = document.querySelector(".screen");
     screenArray.length = 0;
     screen.textContent = 0;
-}
-
-function eraseChar() {
-    const screen = document.querySelector(".screen");
-    screenArray.pop();
-    screen.textContent = screenArray.join(" ");
 }
 
 function findOperators(array) {
@@ -191,7 +194,7 @@ function getValues(array) {
 
     for (let i=0; i < array.length; i++) {
         let element = array[i];
-        if (typeof element === "number" || element === ".") {
+        if (typeof element === "number" || element === "." || element === "-") {
             if (searchFirstValue) {
                 firstValue += element;
             } else {
