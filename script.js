@@ -52,7 +52,20 @@ nine.addEventListener("click", () => {
 
 const dot = document.querySelector(".dot");
 dot.addEventListener("click", () => {
-    displayToScreen(".");
+    let dotLenght = 0;
+
+    for (let i = 0; i < screenArray.length; i++) {
+        let element = screenArray[i];
+        if (element === ".") {
+            dotLenght++;
+        }
+    }
+
+    if (dotLenght == 0 && findOperators(screenArray) == false) {
+        displayToScreen(".");
+    } else if (dotLenght == 1 && findOperators(screenArray)) {
+        displayToScreen(".");
+    }
 })
 
 const plus = document.querySelector(".plus");
@@ -192,7 +205,7 @@ function getValues(array) {
     let searchFirstValue = true;
     let operator = "";
 
-    for (let i=0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         let element = array[i];
         if (typeof element === "number" || element === "." || element === "-") {
             if (searchFirstValue) {
